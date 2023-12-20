@@ -8,7 +8,7 @@ const posts = [
             "image": "https://unsplash.it/300/300?image=15"
         },
         "likes": 80,
-        "created": "2021-06-25"
+        "created": "2022-06-25"
     },
     {
         "id": 2,
@@ -19,7 +19,7 @@ const posts = [
             "image": "https://unsplash.it/300/300?image=10"
         },
         "likes": 120,
-        "created": "2021-09-03"
+        "created": "2020-09-03"
     },
     {
         "id": 3,
@@ -62,8 +62,10 @@ console.log(posts, posts.length);
 for (i = 0; i < posts.length; i++){
     const post = document.createElement('div');
     post.classList.add('post');
-    console.log(posts[i].author.name)
-
+    console.log(posts[i].author.name);
+    let mesiTrascorsi = calcoloData(posts[i].created);
+    
+    console.log('mesi trascorsi', mesiTrascorsi);
     post.innerHTML = `
             <div class="post__header">
                 <div class="post-meta">                    
@@ -72,7 +74,7 @@ for (i = 0; i < posts.length; i++){
                     </div>
                     <div class="post-meta__data">
                         <div class="post-meta__author">${posts[i].author.name}</div>
-                        <div class="post-meta__time">${posts[i].created}</div>
+                        <div class="post-meta__time">${calcoloData(posts[i].created)} mesi fa</div>
                     </div>                    
                 </div>
             </div>
@@ -97,28 +99,42 @@ for (i = 0; i < posts.length; i++){
     container.append(post);
 }
 
-const likesPosts = []
+const likesPosts = [];
 const myButtons = document.querySelectorAll('.like-button');
 const likes = document.querySelectorAll('.js-likes-counter');
-console.log(likes)
+console.log(likes);
 console.log(myButtons, myButtons.length);
-let counter = -1
+let counter = 0;
 for (let i = 0; i < myButtons.length; i++){
     myButtons[i].addEventListener('click', function(){
         
         if (!myButtons[i].classList.contains('like-button--liked')){
         myButtons[i].classList.add('like-button--liked');
         likes[i].innerHTML ++
-        likesPosts.push(posts[i].id)
+        likesPosts.push(posts[i].id);
         counter ++
         } else {
             myButtons[i].classList.remove('like-button--liked');
             likes[i].innerHTML --;
-            counter --
-            likesPosts.splice(counter, 1)
+            counter --;
+            likesPosts.splice(counter, 1);
         }
-        console.log(likesPosts)
-        console.log(counter)
+        console.log(likesPosts);
+        console.log(counter);
     })
+}
+calcoloData(posts[0].created)
+function calcoloData (day){
+    const giornoRiferimento = new Date(day);
+    // console.log(giornoRiferimento)
+    const dataCorrente = new Date();
+    // Calcolo differenza in mesi
+    // const differenzaInMesi = (dataCorrente.getFullYear() - giornoRiferimento.getFullYear()) * 12 + (dataCorrente.getMonth())
+    const differenzaInMillisecondi = dataCorrente - giornoRiferimento;
+    console.log(differenzaInMillisecondi);
+    const giorniPassati = Math.floor(differenzaInMillisecondi / (24 * 60 * 60 * 1000));
+    console.log(giorniPassati);
+    mesiPassati = Math.floor(giorniPassati / 12);
+    return mesiPassati
 }
 
